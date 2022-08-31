@@ -66,19 +66,16 @@ class SearchPartyPoint extends Circle {
         this.x = x;
         this.y = y;
     }
-    
-    searchRadius() {
 
-    }
+    collideAndHold() {
 
-    foundAndHold() {
 
     }
 
 
 }
 
-const salesmanPoints = 365;
+const salesmanPoints = 360;
 
 const points = []; 
 const searchPartyPoints = [];
@@ -199,6 +196,7 @@ function loop() {
             locationY = pointY + centerPointY;
      
             searchPartyPoints[i].pointRadiusSq = searchPartyPoints[i].pointRadiusSq - 1000;
+            
             searchPartyPoints[i].drawSearchPartyPoint();
             searchPartyPoints[i].moveToCenter(locationX, locationY);
             centerPoint.drawCenterPoint(); 
