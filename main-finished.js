@@ -40,9 +40,10 @@ class Circle {
 
 class SearchPartyPoint extends Circle {
     
-    constructor(x, y, radius, pointRadiusSq){
+    constructor(x, y, radius, pointRadiusSq, flag){
         super(x, y, radius);
         this.pointRadiusSq = pointRadiusSq;
+        this.flag = flag;
     }
 
     drawSearchPartyPoint() {
@@ -58,24 +59,25 @@ class SearchPartyPoint extends Circle {
         ctx.stroke();
     }
 
-    linkWithNeihbors() {
+    linkWithNeighbors() {
 
     }
 
     moveToCenter(x, y) {
-        this.x = x;
-        this.y = y;
+        if(this.flag === false){
+            this.x = x;
+            this.y = y;
+        }
     }
 
-    collideAndHold() {
-
+    collideAndHold(x, y, radius) {
 
     }
 
 
 }
 
-const salesmanPoints = 360;
+const salesmanPoints = 10;
 
 const points = []; 
 const searchPartyPoints = [];
@@ -143,7 +145,7 @@ for (let i = 0; i < points.length; i++){
             centerPoint = new Circle(
                 centerPointX,
                 centerPointY,
-                10
+                5
             )   
         }
 
@@ -153,12 +155,12 @@ for (let i = 0; i < points.length; i++){
 //Generate Search Party Points and assemble in equidistant circle around collective center
 let pointAngleCounter = 1;
 
-while (searchPartyPoints.length < points.length) {    
+while (searchPartyPoints.length < points.length * 11) {    
     let pointAngle = 1/points.length * 2 * Math.PI;
     let pointRadiusSq = circle.radius * circle.radius + 50000;
-    let pointX, pointY, pointAngleIncrement, locationX, locationY
+    let pointX, pointY, pointAngleIncrement, locationX, locationY, flag
     
-    if (pointAngleCounter < points.length) {
+    if (pointAngleCounter < points.length * 11) {
         pointAngleIncrement = pointAngle * pointAngleCounter
         pointX = Math.sqrt(pointRadiusSq) * Math.cos(pointAngleIncrement);
         pointY = Math.sqrt(pointRadiusSq) * Math.sin(pointAngleIncrement);
@@ -169,8 +171,9 @@ while (searchPartyPoints.length < points.length) {
     const searchPartyPoint = new SearchPartyPoint (
         locationX,
         locationY,
-        3,
-        pointRadiusSq
+        7,
+        pointRadiusSq,
+        flag = false
     )
 
     searchPartyPoints.push(searchPartyPoint);
@@ -196,10 +199,24 @@ function loop() {
             locationY = pointY + centerPointY;
      
             searchPartyPoints[i].pointRadiusSq = searchPartyPoints[i].pointRadiusSq - 1000;
-            
-            searchPartyPoints[i].drawSearchPartyPoint();
             searchPartyPoints[i].moveToCenter(locationX, locationY);
             centerPoint.drawCenterPoint(); 
+
+            for(j = 0; j < points.length; j++) {
+                console.log(searchPartyPoints, 'searchpartypoints')
+                let dx = points[j].x - searchPartyPoints[i].x;
+                let dy = points[j].y - searchPartyPoints[i].y;
+                let radii = points[j].radius + searchPartyPoints[i].radius;
+                let flag = false;
+
+                if ((dx * dx) + (dy * dy) < (radii * radii)) {
+                    searchPartyPoints[i].x = points[j].x;
+                    searchPartyPoints[i].y = points[j].y;
+                    searchPartyPoints[i].flag = true;
+                }
+            }
+            
+            searchPartyPoints[i].drawSearchPartyPoint();
         }
 
         for (i = 0; i < points.length - 1; i++) {
