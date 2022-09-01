@@ -1,12 +1,11 @@
+//Spinning Around the Circle Like a Laser Spider
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
-function random(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+
 
 class Circle {
 
@@ -84,13 +83,22 @@ const searchPartyPoints = [];
 const centerX = width/2;
 const centerY = height/2;
 const circle = new Circle(centerX, centerY, 350);
+let randomSwitch = true;
 
+function randomer() {
+
+    if(randomSwitch) {
+        return Math.random()
+    } else {
+        return .56;
+    }
+}
 
 //Generate Traveling Salesman Points randomly
 while (points.length < salesmanPoints) {
 
-    let pointAngle = Math.random() * 2 * Math.PI;
-    let pointRadiusSq = Math.random() * (circle.radius-100) * circle.radius;
+    let pointAngle = randomer() * 2 * Math.PI;
+    let pointRadiusSq = randomer() * (circle.radius-100) * circle.radius;
     let pointX = Math.sqrt(pointRadiusSq) * Math.cos(pointAngle);
     let pointY = Math.sqrt(pointRadiusSq) * Math.sin(pointAngle);
     let locationX = pointX + centerX;
@@ -179,7 +187,6 @@ while (searchPartyPoints.length < points.length * 11) {
     searchPartyPoints.push(searchPartyPoint);
     pointAngleCounter++
 }
-
 
 
 //Loop the animation using requestAnimationFrame()

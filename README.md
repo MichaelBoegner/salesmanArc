@@ -37,3 +37,24 @@ the same principle as the shrink wrap portion, albeit with a less fluid or calcu
 7. All search points should proceed towards the collective center until all have found a traveling salesman
    point to hold to. The resulting shape, formed by their connecting lines, is the solution to the 
    traveling salesman problem.
+
+
+## Revised Search Party Search Method
+1. The original search radius search method seems to be too broad and doesn't work. 
+2. The new method is to aquire enough Search Party Points to have them standing, effectively, shoulder 
+   to shoulder as they march towards the center. 
+3. Should a Search Party Point discover a Traveling Salesman Point, then it will aquire that point as it's new
+   location and hold, as before, but it will then also raise a flag affirming a discovery has been made. 
+4. Search Party Points will regularly check in with their neighbor to see if the discovery flag has been raised.
+5. If they get word back that a discovery flag has been raised, they will relay the message to their other neighbors
+   in the chain, letting them know the flag has been raised, causing each of them to raise their own flags as well, but 
+   with decreasing impact on the movement behavior of each subsequent point.
+
+## Chaining the Search Party Points Together
+1. There will be a looping check to see if a Search Party Point's neighbor has found a Traveling Salesman Point.
+2. If true, then it will aquire the neighbor's coordinates as it's new center point of gravity/direction of movement
+   which will compete with the original centerpoint's force. 
+3. The newly chained point will then rotate at an angle that brings it between the original center and it's new found center point. 
+4. It will also throw back a message to the other points behind it to notify that they should chain as well 
+   with incrementally decreasing effect of the new found center point's gravity on them, until that effect reaches 0,
+   at which point the message will not be thrown back anymore. 
