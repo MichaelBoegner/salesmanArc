@@ -291,8 +291,8 @@ function loop() {
             if(searchPartyPoints[i].foundFlagFound1) {
                 console.log(searchPartyPoints[i], "Flagfound check")
                 console.log(i, 'I')
-                searchPartyPoints[i].newCenterX = 10 + searchPartyPoints[k].x;
-                searchPartyPoints[i].newCenterY = 10 + searchPartyPoints[k].y;
+                searchPartyPoints[i].newCenterX = searchPartyPoints[k].x;
+                searchPartyPoints[i].newCenterY = searchPartyPoints[k].y;
                 
                 searchPartyPoints[i].rotateTowardsFound();
                 searchPartyPoints[i].draw();
