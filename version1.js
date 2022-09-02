@@ -38,13 +38,32 @@ class Circle {
 
 class SearchPartyPoint extends Circle {
     
-    constructor(x, y, radius, pointRadiusSq, flagFound, radiusChainer, newCenterX, newCenterY, foundFlagFound1, foundFlagFound2, foundFlagFound3, foundFlagFound4, foundFlagFound5){
+    constructor(
+        x, 
+        y, 
+        radius, 
+        pointRadiusSq, 
+        flagFound, 
+        originalRadius,
+        newRadius, 
+        newCenterX, 
+        newCenterY, 
+        newAngle, 
+        foundFlagFound1, 
+        foundFlagFound2, 
+        foundFlagFound3, 
+        foundFlagFound4, 
+        foundFlagFound5
+        ) {
+        
         super(x, y, radius);
         this.pointRadiusSq = pointRadiusSq;
         this.flagFound = flagFound;
-        this.radiusChainer = radiusChainer;
+        this.originalRadius = originalRadius;
+        this.newRadius = newRadius;
         this.newCenterX = newCenterX;
         this.newCenterY = newCenterY;
+        this.newAngle = newAngle;
         this.foundFlagFound1 = foundFlagFound1;
         this.foundFlagFound2 = foundFlagFound2;
         this.foundFlagFound3 = foundFlagFound3;
@@ -89,7 +108,7 @@ const centerX = width/2;
 const centerY = height/2;
 const mainCircle = 50
 const circle = new Circle(centerX, centerY, mainCircle);
-const radiusChainer = 50;
+const originalRadius = 50;
 let searchPartyMultiplier = 20
 
 
@@ -152,7 +171,7 @@ for (let i = 0; i < points.length; i++){
             centerPoint = new Circle(
                 centerPointX,
                 centerPointY,
-                5
+                3
             )   
         }
 
@@ -166,7 +185,7 @@ let pointAngleCounter = 1;
 while (searchPartyPoints.length < points.length * searchPartyMultiplier) {    
     let pointAngle = 1/points.length * 2 * Math.PI;
     let pointRadiusSq = circle.radius * circle.radius + 100;
-    let pointX, pointY, pointAngleIncrement, locationX, locationY, radiusChainer
+    let pointX, pointY, pointAngleIncrement, locationX, locationY, originalRadius
     
     if (pointAngleCounter < points.length * searchPartyMultiplier) {
         pointAngleIncrement = pointAngle * pointAngleCounter
@@ -182,9 +201,11 @@ while (searchPartyPoints.length < points.length * searchPartyMultiplier) {
         1,
         pointRadiusSq,
         flagFound = false,
-        radiusChainer = 50,
+        originalRadius = 50,
+        newRadius = 0,
         newCenterX = 0,
         newCenterY = 0,
+        newAngle = 0,
         foundFlagFound1 = false,
         foundFlagFound2 = false,
         foundFlagFound3 = false,
@@ -213,7 +234,7 @@ function loop() {
             locationX = pointX + centerPointX;
             locationY = pointY + centerPointY;
             
-            searchPartyPoints[i].pointRadiusSq = searchPartyPoints[i].pointRadiusSq - searchPartyPoints[i].radiusChainer;
+            searchPartyPoints[i].pointRadiusSq = searchPartyPoints[i].pointRadiusSq - searchPartyPoints[i].originalRadius;
             searchPartyPoints[i].moveToCenter(locationX, locationY);
             centerPoint.drawCenterPoint(); 
             

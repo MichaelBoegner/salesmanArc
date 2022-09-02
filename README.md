@@ -58,3 +58,21 @@ the same principle as the shrink wrap portion, albeit with a less fluid or calcu
 4. It will also throw back a message to the other points behind it to notify that they should chain as well 
    with incrementally decreasing effect of the new found center point's gravity on them, until that effect reaches 0,
    at which point the message will not be thrown back anymore. 
+
+
+## Rotation method using getcontext.rotate()
+function loop() {
+   ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+   ctx.fillRect(0, 0,  width, height);
+   
+   centerBall.draw();
+   ctx.save();
+   ctx.translate(centerBall.x, centerBall.y);
+   ballRotate.rotateBall();
+   ballRotate.draw();
+   ctx.restore();
+
+   requestAnimationFrame(loop);
+}
+
+loop();
