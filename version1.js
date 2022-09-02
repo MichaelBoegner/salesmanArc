@@ -1,3 +1,4 @@
+//instantiate canvas from html selection and use context
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -42,7 +43,7 @@ class SearchPartyPoint extends Circle {
         x, 
         y, 
         radius, 
-        pointRadiusSq, 
+        centerPointRadiusSq, 
         flagFound, 
         originalRadius,
         newRadius, 
@@ -57,7 +58,7 @@ class SearchPartyPoint extends Circle {
         ) {
         
         super(x, y, radius);
-        this.pointRadiusSq = pointRadiusSq;
+        this.centerPointRadiusSq = centerPointRadiusSq;
         this.flagFound = flagFound;
         this.originalRadius = originalRadius;
         this.newRadius = newRadius;
@@ -92,33 +93,89 @@ class SearchPartyPoint extends Circle {
     }
   
     checkRightNeighbor(rightNeighbor) {
-        console.log(rightNeighbor, 'rightneighbor')
         if(rightNeighbor.flagFound === true) {
             this.newCenterX = rightNeighbor.x;
             this.newCenterY = rightNeighbor.y;
+            this.foundFlagFound1 = true;
         }
+    }
+
+    rotateTowardsFound() {
+        if (this.newAngle > 360 && this.foundFlagFound1 === true) {
+            this.newAngle = 1;
+            this.newRadius = 5;
+            this.newAngle = this.newAngle + 1;
+            this.x = 10;
+            this.y = 10;
+            ctx.save();
+            ctx.translate(this.newCenterX, this.newCenterY);
+            ctx.rotate(this.newAngle * Math.PI / 180);
+        } else if (this.foundFlagFound1 === true) {
+            console.log('executed')
+               this.newAngle = this.newAngle + 1;
+               this.newRadius = 5;
+               this.x = 10;
+               this.y = 10;
+               ctx.save();
+               ctx.translate(this.newCenterX, this.newCenterY);
+               ctx.rotate(this.newAngle * Math.PI / 180);
+            }
     }
 }
 
-const salesmanPoints = 5;
+class UserControls {
+    constructor(start, stop, stepforward, stepbackwards) {
+        this.start = start;
+        this.stop =  stop;
+        this.stepforward = stepforward;
+        this.stepbackwards = stepbackwards;
 
+        window.addEventListener('keydown', (e) => {
+            switch(e.key) {
+              case 's':
+                this.start = true;
+                break;
+              case 'd':
+                this.start = false;
+                break;
+              case 'f':
+                this.stepforward = true;
+                break;
+              case 'b':
+                this.stepbackwards = true;
+                break;
+            }
+          });
+      }
+    }
+    
+
+//Globals
+const salesmanPoints = 5;
 const points = []; 
 const searchPartyPoints = [];
 const centerX = width/2;
 const centerY = height/2;
-const mainCircle = 50
+const mainCircle = 150
 const circle = new Circle(centerX, centerY, mainCircle);
 const originalRadius = 50;
-let searchPartyMultiplier = 20
+const searchPartyMultiplier = 20
+
+//Instantiate UserControls
+const userControls = new UserControls(
+    false,
+    false,
+    false,
+    false,
+)
 
 
 //Generate Traveling Salesman Points randomly
 while (points.length < salesmanPoints) {
-
     let pointAngle = Math.random() * 2 * Math.PI;
-    let pointRadiusSq = Math.random() * (circle.radius) * circle.radius;
-    let pointX = Math.sqrt(pointRadiusSq) * Math.cos(pointAngle);
-    let pointY = Math.sqrt(pointRadiusSq) * Math.sin(pointAngle);
+    let centerPointRadiusSq = Math.random() * (circle.radius) * circle.radius;
+    let pointX = Math.sqrt(centerPointRadiusSq) * Math.cos(pointAngle);
+    let pointY = Math.sqrt(centerPointRadiusSq) * Math.sin(pointAngle);
     let locationX = pointX + centerX;
     let locationY = pointY + centerY;
 
@@ -133,6 +190,7 @@ while (points.length < salesmanPoints) {
 
 
 
+//Find the collective center of the Traveling Salesman Points
 let maxPointX = 0;
 let minPointX = width;
 let maxPointY = 0;
@@ -181,16 +239,15 @@ for (let i = 0; i < points.length; i++){
 //Generate Search Party Points and assemble in equidistant circle around collective center
 let pointAngleCounter = 1;
 
-
 while (searchPartyPoints.length < points.length * searchPartyMultiplier) {    
     let pointAngle = 1/points.length * 2 * Math.PI;
-    let pointRadiusSq = circle.radius * circle.radius + 100;
+    let centerPointRadiusSq = circle.radius * circle.radius + 100;
     let pointX, pointY, pointAngleIncrement, locationX, locationY, originalRadius
     
     if (pointAngleCounter < points.length * searchPartyMultiplier) {
         pointAngleIncrement = pointAngle * pointAngleCounter
-        pointX = Math.sqrt(pointRadiusSq) * Math.cos(pointAngleIncrement);
-        pointY = Math.sqrt(pointRadiusSq) * Math.sin(pointAngleIncrement);
+        pointX = Math.sqrt(centerPointRadiusSq) * Math.cos(pointAngleIncrement);
+        pointY = Math.sqrt(centerPointRadiusSq) * Math.sin(pointAngleIncrement);
         locationX = pointX + centerPointX;
         locationY = pointY + centerPointY;
     } 
@@ -198,8 +255,8 @@ while (searchPartyPoints.length < points.length * searchPartyMultiplier) {
     const searchPartyPoint = new SearchPartyPoint (
         locationX,
         locationY,
-        1,
-        pointRadiusSq,
+        3,
+        centerPointRadiusSq,
         flagFound = false,
         originalRadius = 50,
         newRadius = 0,
@@ -220,30 +277,43 @@ while (searchPartyPoints.length < points.length * searchPartyMultiplier) {
 
 //Loop the animation using requestAnimationFrame()
 function loop() {
+    //redraw background to give animation effect
     ctx.fillStyle = 'rgba(255, 255, 255, 1)';
     ctx.fillRect(0, 0,  width, height);
 
-    if (searchPartyPoints[0].pointRadiusSq > 0) {
+    if (userControls.start) {
         for (i = 0; i < searchPartyPoints.length; i++) {
             let pointAngle = 1/searchPartyPoints.length * 2 * Math.PI;
-            let pointX, pointY, pointAngleIncrement, locationX, locationY, rightneighbor
-            
-            pointAngleIncrement = pointAngle * i;
-            pointX = Math.sqrt(searchPartyPoints[i].pointRadiusSq) * Math.cos(pointAngleIncrement);
-            pointY = Math.sqrt(searchPartyPoints[i].pointRadiusSq) * Math.sin(pointAngleIncrement);
-            locationX = pointX + centerPointX;
-            locationY = pointY + centerPointY;
-            
-            searchPartyPoints[i].pointRadiusSq = searchPartyPoints[i].pointRadiusSq - searchPartyPoints[i].originalRadius;
-            searchPartyPoints[i].moveToCenter(locationX, locationY);
-            centerPoint.drawCenterPoint(); 
-            
+            let pointX, pointY, pointAngleIncrement, locationX, locationY
             let k = i + 1 
-            if(searchPartyPoints[k] !== undefined) {
-                searchPartyPoints[i].checkRightNeighbor(searchPartyPoints[k]);
-                console.log(searchPartyPoints)
+
+            //Check foundFlagFound1 to see if this is a newly affected Search Party Point and begin rotation
+            if(searchPartyPoints[i].foundFlagFound1) {
+                console.log(searchPartyPoints[i], "Flagfound check")
+                console.log(i, 'I')
+                searchPartyPoints[i].newCenterX = 10 + searchPartyPoints[k].x;
+                searchPartyPoints[i].newCenterY = 10 + searchPartyPoints[k].y;
+                
+                searchPartyPoints[i].rotateTowardsFound();
+                searchPartyPoints[i].draw();
+                ctx.restore();
+            } else { //calcualate radius for Search Party Points
+                if (searchPartyPoints[0].centerPointRadiusSq > 0) {
+                    pointAngleIncrement = pointAngle * i;
+                    pointX = Math.sqrt(searchPartyPoints[i].centerPointRadiusSq) * Math.cos(pointAngleIncrement);
+                    pointY = Math.sqrt(searchPartyPoints[i].centerPointRadiusSq) * Math.sin(pointAngleIncrement);
+                    locationX = pointX + centerPointX;
+                    locationY = pointY + centerPointY;
+                    
+                    searchPartyPoints[i].centerPointRadiusSq = searchPartyPoints[i].centerPointRadiusSq - searchPartyPoints[i].originalRadius;
+                    searchPartyPoints[i].moveToCenter(locationX, locationY);
+                }
             }
 
+            //Draw collective center point for Traveling Salesman Points
+            centerPoint.drawCenterPoint(); 
+            
+            //Search Party Point detector
             for(j = 0; j < points.length; j++) {
                 let dx = points[j].x - searchPartyPoints[i].x;
                 let dy = points[j].y - searchPartyPoints[i].y;
@@ -255,19 +325,27 @@ function loop() {
                     searchPartyPoints[i].flagFound = true;
                 }
             }
-            
+
+            //Check neighbor to see if Traveling Salesman Point has been found and raise flags
+            if(searchPartyPoints[k] !== undefined) {
+                searchPartyPoints[i].checkRightNeighbor(searchPartyPoints[k]);
+            }
+
+            //Draw resulting found Search Party Point
             searchPartyPoints[i].drawSearchPartyPoint();
         }
-
+        
+        //draw Traveling Salesman Points
         for (i = 0; i < points.length - 1; i++) {
             points[i].drawPoint(); 
         }
     } else {
+        //draw Search Party Points
         for (i = 0; i < searchPartyPoints.length; i++) {
             searchPartyPoints[i].drawSearchPartyPoint();
             centerPoint.drawCenterPoint();
         }
-
+        //draw Traveling Salesman Points
         for (i = 0; i < points.length; i++) {
             points[i].drawPoint();
         }
@@ -277,27 +355,3 @@ function loop() {
 }
 
 loop();
-
-//connect Search Party Points to each other with lines
-// for (i = 0; i <= searchPartyPoints.length; i++) {
-//     if(i === 0) {
-//         console.log('first')
-//         ctx.beginPath()
-//         ctx.moveTo(searchPartyPoints[i].x, searchPartyPoints[i].y);
-//     } else if(i > 0 && i < searchPartyPoints.length) {
-//         console.log('second')
-//         ctx.lineTo(searchPartyPoints[i].x, searchPartyPoints[i].y);
-//     } else {
-//         console.log('third')
-//         ctx.closePath();
-//     }
-//     ctx.stroke()
-// }
-
-// //Draw Search Party Point's radius
-// const searchPartyPointRadius = (Math.sqrt(((searchPartyPoints[1].x-searchPartyPoints[0].x) * ((searchPartyPoints[1].x-searchPartyPoints[0].x))) + ((searchPartyPoints[1].y-searchPartyPoints[0].y) * ((searchPartyPoints[1].y-searchPartyPoints[0].y))))) / 2;
-// console.log(searchPartyPointRadius, 'searchPartyPointRadius')
-
-// for (i = 0; i < searchPartyPoints.length; i++) {
-//     searchPartyPoints[i].drawSearchPartyPointRadius(searchPartyPointRadius);
-// }
