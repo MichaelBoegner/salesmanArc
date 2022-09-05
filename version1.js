@@ -101,9 +101,9 @@ class SearchPartyPoint extends Circle {
     }
 
     checkFoundFlagFound1(leftNeighbor) {
-        if(this.foundFlagFound1) {
+        if(leftNeighbor.foundFlagFound1) {
             console.log("foundfoundflag1")
-            leftNeighbor.foundFlagFound2 = true;
+            this.foundFlagFound2 = true;
         }
     }
 
@@ -295,14 +295,14 @@ function loop() {
             let k = i + 1 
             let l = i - 1 
 
-
+            //Check neighbor to see if Traveling Salesman Point has been found and raise flags
             if(searchPartyPoints[k] !== undefined) {
                 searchPartyPoints[i].checkRightNeighbor(searchPartyPoints[k]);
             }
 
-
+            //Check leftneighbor to see if Traveling Salesman Point has been found byand raise flags
             if(searchPartyPoints[l] !== undefined) {
-                searchPartyPoints[i].checkFoundFlagFound1(searchPartyPoints[l]);
+                searchPartyPoints[l].checkFoundFlagFound1(searchPartyPoints[i]);
             }
 
             //Check foundFlagFound1 to see if this is a newly affected Search Party Point and begin rotation
@@ -318,11 +318,11 @@ function loop() {
             } else if (searchPartyPoints[i].foundFlagFound2 && searchPartyPoints[l] !== undefined) {
                 console.log(searchPartyPoints[l], "Flagfound check 2")
                 console.log(l, 'L')
-                searchPartyPoints[i].newCenterX = searchPartyPoints[l].x;
-                searchPartyPoints[i].newCenterY = searchPartyPoints[l].y;
+                searchPartyPoints[l].newCenterX = searchPartyPoints[i].x;
+                searchPartyPoints[l].newCenterY = searchPartyPoints[i].y;
                 
-                searchPartyPoints[i].rotateTowardsFound();
-                searchPartyPoints[i].draw();
+                searchPartyPoints[l].rotateTowardsFound();
+                searchPartyPoints[l].draw();
                 ctx.restore();
             } else { //calcualate radius for Search Party Points
                 if (searchPartyPoints[0].centerPointRadiusSq > 0) {
@@ -353,7 +353,7 @@ function loop() {
                 }
             }
 
-            //Check neighbor to see if Traveling Salesman Point has been found and raise flags
+
             
             
   
