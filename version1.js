@@ -100,10 +100,10 @@ class SearchPartyPoint extends Circle {
         }
     }
 
-    checkFoundFlagFound1(rightNeighbor) {
-        if(rightNeighbor.foundFlagFound1) {
+    checkFoundFlagFound1(leftNeighbor) {
+        if(this.foundFlagFound1) {
             console.log("foundfoundflag1")
-            this.foundFlagFound2 = true;
+            leftNeighbor.foundFlagFound2 = true;
         }
     }
 
@@ -295,8 +295,18 @@ function loop() {
             let k = i + 1 
             let l = i - 1 
 
+
+            if(searchPartyPoints[k] !== undefined) {
+                searchPartyPoints[i].checkRightNeighbor(searchPartyPoints[k]);
+            }
+
+
+            if(searchPartyPoints[l] !== undefined) {
+                searchPartyPoints[i].checkFoundFlagFound1(searchPartyPoints[l]);
+            }
+
             //Check foundFlagFound1 to see if this is a newly affected Search Party Point and begin rotation
-            if(searchPartyPoints[i].foundFlagFound1 && i < searchPartyPoints.length - 1) {
+            if(searchPartyPoints[i].foundFlagFound1 && searchPartyPoints[k] !== undefined) {
                 console.log(searchPartyPoints[i], "Flagfound check")
                 console.log(i, 'I')
                 searchPartyPoints[i].newCenterX = searchPartyPoints[k].x;
@@ -305,8 +315,7 @@ function loop() {
                 searchPartyPoints[i].rotateTowardsFound();
                 searchPartyPoints[i].draw();
                 ctx.restore();
-                searchPartyPoints[i].checkRightNeighbor(searchPartyPoints[k]);
-            } else if (searchPartyPoints[i].foundFlagFound2 && i > 0) {
+            } else if (searchPartyPoints[i].foundFlagFound2 && searchPartyPoints[l] !== undefined) {
                 console.log(searchPartyPoints[l], "Flagfound check 2")
                 console.log(l, 'L')
                 searchPartyPoints[i].newCenterX = searchPartyPoints[l].x;
@@ -315,7 +324,6 @@ function loop() {
                 searchPartyPoints[i].rotateTowardsFound();
                 searchPartyPoints[i].draw();
                 ctx.restore();
-                searchPartyPoints[i].checkFoundFlagFound1(searchPartyPoints[l]);
             } else { //calcualate radius for Search Party Points
                 if (searchPartyPoints[0].centerPointRadiusSq > 0) {
                     pointAngleIncrement = pointAngle * i;
