@@ -44,32 +44,32 @@ class SearchPartyPoint extends Circle {
         y, 
         radius, 
         centerPointRadiusSq, 
-        flagFound, 
+        pointFoundFlag,
+        flagFound1,
+        flagFound2,
+        flagFound3,
+        flagFound4,
+        flagFound5,
         originalRadius,
         newRadius, 
         newCenterX, 
         newCenterY, 
-        newAngle, 
-        foundFlagFound1, 
-        foundFlagFound2, 
-        foundFlagFound3, 
-        foundFlagFound4, 
-        foundFlagFound5
+        newAngle
         ) {
         
         super(x, y, radius);
         this.centerPointRadiusSq = centerPointRadiusSq;
-        this.flagFound = flagFound;
+        this.pointFoundFlag = pointFoundFlag;
+        this.flagFound1 = flagFound1;
+        this.flagFound2 = flagFound2;
+        this.flagFound3 = flagFound3;
+        this.flagFound4 = flagFound4;
+        this.flagFound5 = flagFound5;
         this.originalRadius = originalRadius;
         this.newRadius = newRadius;
         this.newCenterX = newCenterX;
         this.newCenterY = newCenterY;
         this.newAngle = newAngle;
-        this.foundFlagFound1 = foundFlagFound1;
-        this.foundFlagFound2 = foundFlagFound2;
-        this.foundFlagFound3 = foundFlagFound3;
-        this.foundFlagFound4 = foundFlagFound4;
-        this.foundFlagFound5 = foundFlagFound5;
     }
 
     drawSearchPartyPoint() {
@@ -86,29 +86,28 @@ class SearchPartyPoint extends Circle {
     }
 
     moveToCenter(x, y) {
-        if(!this.flagFound){
+        if(!this.pointFoundFlag){
             this.x = x;
             this.y = y;
         }
     }
   
-    checkRightNeighbor(rightNeighbor) {
-        if(rightNeighbor.flagFound) {
-            this.newCenterX = rightNeighbor.x;
-            this.newCenterY = rightNeighbor.y;
-            this.foundFlagFound1 = true;
+    checkForwardNeighborForPointFound(forward) {
+        if(forward.pointFoundFlag) {
+            this.flagFound1 = true;
+            this.newCenterX = forward.x;
+            this.newCenterY = forward.y;
         }
     }
 
-    checkFoundFlagFound1(leftNeighbor) {
-        if(leftNeighbor.foundFlagFound1) {
-            console.log("foundfoundflag1")
-            this.foundFlagFound2 = true;
-        }
+    throwFlagBack1(behind1) {
+        behind1.flagfound2 = true;
     }
+
 
     rotateTowardsFound() {
-        if (this.newAngle > 360 && this.foundFlagFound1 || this.newAngle > 360 && this.foundFlagFound2) {
+        if (this.newAngle > 360) {
+            console.log(this, 'over 360 executed')
             this.newAngle = 1;
             this.newRadius = 5;
             this.newAngle = this.newAngle + 1;
@@ -117,8 +116,8 @@ class SearchPartyPoint extends Circle {
             ctx.save();
             ctx.translate(this.newCenterX, this.newCenterY);
             ctx.rotate(this.newAngle * Math.PI / 180);
-        } else if (this.foundFlagFound1 || this.foundFlagFound2) {
-            console.log('executed')
+        } else {
+            console.log(this, 'rotate executed')
                this.newAngle = this.newAngle + 1;
                this.newRadius = 5;
                this.x = 10;
@@ -264,17 +263,17 @@ while (searchPartyPoints.length < points.length * searchPartyMultiplier) {
         locationY,
         3,
         centerPointRadiusSq,
-        flagFound = false,
+        pointFoundFlag = false,
+        flagFound1 = false,
+        flagFound2 = false,
+        flagFound3 = false,
+        flagFound4 = false,
+        flagFound5 = false,
         originalRadius = 50,
         newRadius = 0,
         newCenterX = 0,
         newCenterY = 0,
-        newAngle = 0,
-        foundFlagFound1 = false,
-        foundFlagFound2 = false,
-        foundFlagFound3 = false,
-        foundFlagFound4 = false,
-        foundFlagFound5 = false
+        newAngle = 0
     )
 
     searchPartyPoints.push(searchPartyPoint);
@@ -292,38 +291,29 @@ function loop() {
         for (i = 0; i < searchPartyPoints.length; i++) {
             let pointAngle = 1/searchPartyPoints.length * 2 * Math.PI;
             let pointX, pointY, pointAngleIncrement, locationX, locationY
-            let k = i + 1 
-            let l = i - 1 
+            let k = i + 1;
+            let l = i - 1;
 
             //Check neighbor to see if Traveling Salesman Point has been found and raise flags
             if(searchPartyPoints[k] !== undefined) {
-                searchPartyPoints[i].checkRightNeighbor(searchPartyPoints[k]);
-            }
+                searchPartyPoints[i].checkForwardNeighborForPointFound(searchPartyPoints[k]);
+                }
 
-            //Check leftneighbor to see if Traveling Salesman Point has been found byand raise flags
-            if(searchPartyPoints[l] !== undefined) {
-                searchPartyPoints[l].checkFoundFlagFound1(searchPartyPoints[i]);
-            }
+            if(searchPartyPoints[l] !== undefined && !searchPartyPoints[l].pointFoundFlag) {
+                searchPartyPoints[i].throwFlagBack1(searchPartyPoints[l]);
+                }
 
-            //Check foundFlagFound1 to see if this is a newly affected Search Party Point and begin rotation
-            if(searchPartyPoints[i].foundFlagFound1 && searchPartyPoints[k] !== undefined) {
-                console.log(searchPartyPoints[i], "Flagfound check")
-                console.log(i, 'I')
-                searchPartyPoints[i].newCenterX = searchPartyPoints[k].x;
-                searchPartyPoints[i].newCenterY = searchPartyPoints[k].y;
-                
+            //Check flagFound1 to see if this is a newly affected Search Party Point and begin rotation
+            if (searchPartyPoints[i].flagFound1) {
                 searchPartyPoints[i].rotateTowardsFound();
                 searchPartyPoints[i].draw();
                 ctx.restore();
-            } else if (searchPartyPoints[i].foundFlagFound2 && searchPartyPoints[l] !== undefined) {
-                console.log(searchPartyPoints[l], "Flagfound check 2")
-                console.log(l, 'L')
-                searchPartyPoints[l].newCenterX = searchPartyPoints[i].x;
-                searchPartyPoints[l].newCenterY = searchPartyPoints[i].y;
+            } else if (searchPartyPoints[i].flagFound2) {
+                console.log('shouldnt be executed')
+                searchPartyPoints[i].x = searchPartyPoints[k].x;
+                searchPartyPoints[i].y = searchPartyPoints[k].y;
                 
-                searchPartyPoints[l].rotateTowardsFound();
-                searchPartyPoints[l].draw();
-                ctx.restore();
+                searchPartyPoints[i].draw();
             } else { //calcualate radius for Search Party Points
                 if (searchPartyPoints[0].centerPointRadiusSq > 0) {
                     pointAngleIncrement = pointAngle * i;
@@ -347,9 +337,10 @@ function loop() {
                 let radii = points[j].radius + searchPartyPoints[i].radius;
 
                 if ((dx * dx) + (dy * dy) < (radii * radii)) {
+                    searchPartyPoints[i].pointFoundFlag = true;
                     searchPartyPoints[i].x = points[j].x;
                     searchPartyPoints[i].y = points[j].y;
-                    searchPartyPoints[i].flagFound = true;
+                    searchPartyPoints[i].draw();    
                 }
             }
 
