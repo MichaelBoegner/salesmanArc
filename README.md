@@ -18,6 +18,17 @@ circumference of the circle with the points in a software based setting. So inst
 takes the place of the real world shrink wrap application by resulting in the same shape, using effectively 
 the same principle as the shrink wrap portion, albeit with a less fluid or calculus based approach.
 
+# Version 1
+1. The original method, while true to its heuristic origins, is not sound from a performance standpoint. 
+2. For one, having an array of points searching for another array of points automatically causes the need for a loop within a loop,
+   which is far from the performant solution I see possible with the heuristic version of the approach.
+3. More importantly though, the rotate method I'm using is from Javascripts getcontext and canvas library and does not offer a 
+   reference to the true current x and y coordinates of the point, but rather relies on roation 
+   through illusion by moving the canvas and rotating it. 
+4. I realized that the shrink wrap effect that occurs from the circle coming inwards could be represented iteratively 
+   and mathematically by simply thinking through the steps that are occuring as the circle moves inwards and shrink wraps on to the points. 
+5. See Version 2 below for more details about its theorized implementation.
+
 ## Search Party Algorithm for the Traveling Salesman Problem (screw acronyms)
 1. Sort the coordinates to find max and min correspondingly for each set of x and y. 
 2. Find the halfway points between the max and mins for each set of x and y, resulting in a set of coordinates, 
@@ -76,3 +87,11 @@ function loop() {
 }
 
 loop();
+
+
+# Version2: A More Mathematical Approach 
+1. The first steps I see are that the most outward points come first. 
+2. Then, priority seems to be given to shortest radius. 
+3. So likely that some combination of those two values can be used to sort the points in order by size of value.
+4. Once sorted, then draw the lines for visual representation of the solution.
+5. I will look for sample coordinates online to run tests once this version is implemented.
