@@ -328,6 +328,7 @@ function loop() {
             let k = i + 1;
             let l = i + 2;
 
+            
             //Check neighbor to see if Traveling Salesman Point has been found and raise flags
             if(searchPartyPoints[k] !== undefined && searchPartyPoints[l] !== undefined && !searchPartyPoints[i].flagFound1 && !searchPartyPoints[i].flagFound2) {
                 console.log(i, "I")
@@ -335,10 +336,7 @@ function loop() {
                 searchPartyPoints[i].checkForwardNeighborForFlagFound1(searchPartyPoints[k], searchPartyPoints[l]);
             }
 
-            // if(searchPartyPoints[l] !== undefined && !searchPartyPoints[l].pointFoundFlag && !searchPartyPoints[i].flagFound2) {
-            //     searchPartyPoints[i].throwFlagBack1(searchPartyPoints[l]);
-            //     }
-
+            
             //Check flagFound1 to see if this is a newly affected Search Party Point and begin rotation
             if (searchPartyPoints[i].flagFound1 && !searchPartyPoints[i].pointFoundFlag) {
                 console.log(searchPartyPoints[i], 'flagfound1 conditional thrown')
@@ -349,17 +347,7 @@ function loop() {
                 searchPartyPoints[i].moveFlagFound2Point();
                 searchPartyPoints[i].drawSearchPartyPoint();
                 ctx.restore();
-            }
-            // else if (searchPartyPoints[i].flagFound2 && !searchPartyPoints[i].flagFound1) {
-            //     console.log('flagFound2 if conditional executed')
-            //     console.log(searchPartyPoints[i], "searchPartyPoints[i]")
-            //     console.log(searchPartyPoints[k], "searchPartyPoints[k]")
-            //     searchPartyPoints[i].x = searchPartyPoints[k].x + 10;
-            //     searchPartyPoints[i].y = searchPartyPoints[k].y + 10;
-
-            //     searchPartyPoints[i].drawSearchPartyPoint();
-            // } 
-            else if (!searchPartyPoints[i].flagFound1 && !searchPartyPoints[i].flagFound2) { //calcualate radius for Search Party Points
+            } else if (!searchPartyPoints[i].flagFound1 && !searchPartyPoints[i].flagFound2) { //calcualate radius for Search Party Points
                 if (searchPartyPoints[0].centerPointRadiusSq > 0) {
                     pointAngleIncrement = pointAngle * i;
                     pointX = Math.sqrt(searchPartyPoints[i].centerPointRadiusSq) * Math.cos(pointAngleIncrement);
@@ -382,7 +370,7 @@ function loop() {
                 let radii = points[j].radius + searchPartyPoints[i].radius;
     
                 if ((dx * dx) + (dy * dy) < (radii * radii) && !searchPartyPoints[i].flagFound1 && !searchPartyPoints[i].flagFound2 && !searchPartyPoints[i].pointFoundFlag) { 
-                    searchPartyPoints[i].throwPointFoundFlag(points[j], searchPartyPoints[l])
+                    searchPartyPoints[i].throwPointFoundFlag(points[j])
                 }
             }
 
