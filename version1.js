@@ -327,6 +327,8 @@ function loop() {
             let pointX, pointY, pointAngleIncrement, locationX, locationY
             let k = i + 1;
             let l = i + 2;
+            let pointFound1 = false;
+            let pointFound2 = false;
 
             
             //Check neighbor to see if Traveling Salesman Point has been found and raise flags
