@@ -47,18 +47,40 @@ class Circle {
     }
 
     calculateOrderAngle(travelingSalesmanOrdered) {
-        let x = this.x - this.centerPointX;
-        let y = this.y - this.centerPointY;
-        let tanAngle = x / y;
+        // console.log(this.x, "this.x")
+        // console.log(this.y, "this.y")
+        // console.log(this.centerPointX, "this.centerPointX")
+        // console.log(this.centerPointY, "this.centerPointY")
 
-        if (this.x > this.centerPointX && this.y > this.centerPointY) {
-            this.orderAngle = 90 - Math.atan(tanAngle); 
-        } else if (this.x > this.centerPointX && this.y < this.centerPointY) {
-            this.orderAngle = 90 + Math.atan(tanAngle); 
-        } else if (this.x < this.centerPointX && this.y < this.centerPointY) {
-            this.orderAngle = 180 + Math.atan(tanAngle); 
+        if (this.x > this.centerPointX && this.y < this.centerPointY) {
+            let x = this.x - this.centerPointX;
+            let y = this.centerPointY - this.y;
+            let tanAngle = y / x;
+            console.log(this.x, "X IN TOP RIGHT QUADRANT")
+            console.log(this.y, "Y IN TOP RIGHT QUADRANT")
+            console.log(tanAngle, "tanAngle in top right quadrant")
+            this.orderAngle = 90 - ((Math.atan(tanAngle) * (180/Math.PI))); 
+        } else if (this.x > this.centerPointX && this.y > this.centerPointY) {
+            let x = this.x - this.centerPointX;
+            let y = this.y - this.centerPointY;
+            let tanAngle = y / x;
+            console.log(this.x, "X IN BOTTOM RIGHT QUADRANT")
+            console.log(this.y, "Y IN BOTTOM RIGHT QUADRANT")
+            this.orderAngle = 90 + ((Math.atan(tanAngle) * (180/Math.PI))); 
         } else if (this.x < this.centerPointX && this.y > this.centerPointY) {
-            this.orderAngle = 270 + Math.atan(tanAngle); 
+            let x = this.centerPointX - this.x;
+            let y = this.y - this.centerPointY;
+            let tanAngle = y / x;
+            console.log(this.x, "X IN BOTTOM LEFT QUADRANT")
+            console.log(this.y, "Y IN BOTTOM LEFT QUADRANT")
+            this.orderAngle = 180 + ((Math.atan(tanAngle) * (180/Math.PI)));
+        } else if (this.x < this.centerPointX && this.y < this.centerPointY) {
+            let x = this.centerPointX - this.x;
+            let y = this.centerPointY - this.y;
+            let tanAngle = y / x;
+            console.log(this.x, "X IN TOP LEFT QUADRANT")
+            console.log(this.y, "Y IN TOP LEFT QUADRANT")
+            this.orderAngle = 270 + ((Math.atan(tanAngle) * (180/Math.PI)));
         }
 
         travelingSalesmanOrdered.push(this.orderAngle);
@@ -132,55 +154,70 @@ while (points.length < salesmanPoints) {
 
 
 //Find the collective center of the Traveling Salesman Points
-let maxPointX = 0;
-let minPointX = width;
-let maxPointY = 0;
-let minPointY = height;
-let centerPointX = 0;
-let centerPointY = 0;
-let centerPoint;
+let maxMinFound = {
+    maxValueX: 0,
+    minValueX: 0,
+    maxValueY: 0,
+    minValueY: 0,
+};
 
-for (let i = 0; i < points.length; i++) {
-    for (let h = 1; h < points.length; h++) {
-        
-        //max checker X
-        if (points[i].x > points[h].x && points[i].x > maxPointX) {
-            maxPointX = points[i].x;
-        } 
-    
-        //min checker X
-        if (points[i].x < points[h].x && points[i].x < minPointX) {
-            minPointX = points[i].x;
-        } 
-    
-        //max checker Y
-        if (points[i].y > points[h].y && points[i].y > maxPointY) {
-            maxPointY = points[i].y;
-        } 
-    
-        //min checker Y
-        if (points[i].y < points[h].y && points[i].y < minPointY) {
-            minPointY = points[i].y;
-        } 
+let q = 0
+maxMinFound.maxValueX = points[q].x
 
-        centerPointX = ((maxPointX - minPointX) / 2) + minPointX;
-        centerPointY = ((maxPointY - minPointY) / 2) + minPointY;
-
-        points[i].centerPointX = centerPointX;
-        points[i].centerPointY = centerPointY;
-        
-        if (i === points.length - 1 && h === points.length - 1) {
-            centerPoint = new Circle(
-                centerPointX,
-                centerPointY,
-                3
-            )   
-        }
-
-    }
+while (q < points.length) {
+       if (points[q].x > maxMinFound.maxValueX) {
+        maxMinFound.maxValueX = points[q].x;
+       } 
+       q++; 
 }
 
+q = 0;
+maxMinFound.maxValueY = points[q].y
 
+while (q < points.length) {
+       if (points[q].y > maxMinFound.maxValueY) {
+        maxMinFound.maxValueY = points[q].y;
+       } 
+       q++; 
+}
+
+q = 0;
+maxMinFound.minValueX = points[q].x
+
+while (q < points.length) {
+       if (points[q].x < maxMinFound.minValueX) {
+        maxMinFound.minValueX = points[q].x;
+       } 
+       q++; 
+}
+
+q = 0;
+maxMinFound.minValueY = points[q].y
+
+while (q < points.length) {
+       if (points[q].y < maxMinFound.minValueY) {
+        maxMinFound.minValueY = points[q].y;
+       } 
+       q++; 
+}
+
+console.log(maxMinFound.minValueY, "maxMinFound.minValueY")
+console.log(points, "points AFTER WHILE LOOP")
+
+let centerPointX = (maxMinFound.maxValueX - maxMinFound.minValueX)/2 + maxMinFound.minValueX;
+let centerPointY = (maxMinFound.maxValueY - maxMinFound.minValueY)/2 + maxMinFound.minValueY; 
+
+let centerPoint = new Circle(
+    x = centerPointX,
+    y = centerPointY,
+    3
+)
+
+//assign Centerpoint to each Traveling Salesman Point
+for(i = 0; i < points.length; i++) {
+    points[i].centerPointX = centerPointX;
+    points[i].centerPointY = centerPointY;
+}
 
 //Loop to calculate Traveling Salesman Point Angles
 let travelingSalesmanOrdered = [];
@@ -200,13 +237,7 @@ let minFound = {
 };
 let sortedArray = [];
 let m = 0
-let whileCheck = 0
 
-
-
-
-
-let testarray = [0, 5, 2, 3, 4, 7, 5]
 minFound.minValue = travelingSalesmanOrdered[m];
 minFound.minIndex = m;
 
@@ -226,33 +257,27 @@ while (travelingSalesmanOrdered.length > 0) {
         minFound.minValue = travelingSalesmanOrdered[m];
         minFound.minIndex = m;
     }  
-    
-    whileCheck++
 }
 
 console.log(sortedArray, "sortedArray")
+console.log(points, "CHECKING POINTS")
 
 //Loop the animation using requestAnimationFrame()
 function loop() {
     //redraw background to give animation effect
     ctx.fillStyle = 'rgba(255, 255, 255, 1)';
     ctx.fillRect(0, 0,  width, height);
-
+    
     if (userControls.start) {
         //draw Traveling Salesman Points
-        for (i = 0; i < points.length - 1; i++) {
+        for (i = 0; i < points.length; i++) {
             points[i].drawPoint(); 
         }
-
-        //Draw collective center point for Traveling Salesman Points
+        // console.log("started")
+        //Draw collective center point for Points
         centerPoint.drawCenterPoint(); 
 
-    } else {
-       //draw Traveling Salesman Points
-        for (i = 0; i < points.length; i++) {
-            points[i].drawPoint();
-        }
-    }
+    } 
 
     requestAnimationFrame(loop)
 }
