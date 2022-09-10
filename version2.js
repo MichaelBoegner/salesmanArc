@@ -194,29 +194,72 @@ console.log(travelingSalesmanOrdered, 'traveling salesman point ordered')
 
 
 //Sort travelingSalesmanOrdered array from lowest to highest
-let minFound = 0;
+let minFound = {
+    minValue: 0,
+    minIndex: 0
+};
 let sortedArray = [];
-let m = -1
+let m = 0
 let whileCheck = 0
-let testarray = [1, 2, 3, 4, 5]
 
 
-while (whileCheck < 8) {
-    m++;
-    console.log(travelingSalesmanOrdered, "travelingSalesmanOrdered")
-    console.log(m, "m")
+
+// while (whileCheck < 8) {
    
-    if (m < travelingSalesmanOrdered.length) {
-        minFound = travelingSalesmanOrdered[0]
-        if (travelingSalesmanOrdered[m] < minFound) {
-            minFound = travelingSalesmanOrdered[m];
-            sortedArray.push(minFound);
-            travelingSalesmanOrdered.splice(m, 1);
-        } 
-    }  else if (m >= travelingSalesmanOrdered.length) {
-        m = -1;
-        sortedArray.push(minFound);
-        travelingSalesmanOrdered.splice(0, 1);
+//     console.log(travelingSalesmanOrdered, "travelingSalesmanOrdered")
+//     console.log(m, "m before conditionals")
+   
+//     if (m < travelingSalesmanOrdered.length) {
+//         console.log(m, 'interation begins or continuing') 
+//         minFound = travelingSalesmanOrdered[0]
+//         console.log(minFound, "minfound set to index 0")
+//         if (travelingSalesmanOrdered[m] < minFound) {
+//             console.log(travelingSalesmanOrdered[m], "travelingSalesmanOrdered[m] < minFound")
+//             minFound = travelingSalesmanOrdered[m];
+//             sortedArray.push(minFound);
+//             travelingSalesmanOrdered.splice(m, 1);
+//         } 
+//         m++;
+//     }  else if (m >= travelingSalesmanOrdered.length) {
+//         console.log(m, "iteration ends and starts over with m = -1")
+//         travelingSalesmanOrdered.splice(m, 1);
+//         m = -1;
+//         sortedArray.push(minFound);
+//     }  
+    
+//     whileCheck++
+// }
+
+let testarray = [0, 5, 2, 3, 4, 7, 5]
+minFound.minValue = testarray[m];
+minFound.minIndex = m;
+
+while (testarray.length > 0) {
+    
+    console.log(testarray, "travelingSalesmanOrdered")
+    console.log(m, "m before conditionals")
+    
+    if (m < testarray.length) {
+
+        console.log(testarray[m], "TESTARRAY[M] BEFORE CONDITIONALS")
+        console.log(minFound, "MINFOUND BEFORE CONDITIONALS")
+       if (testarray[m] < minFound.minValue) {
+            console.log(minFound, 'NEW MINFOUND FOUND')
+            minFound.minValue = testarray[m];   
+            minFound.minIndex = m;
+            console.log(minFound, "new minFound");
+       } 
+       m++;
+    }  else if (m >= testarray.length || testarray.length === 1) {
+        console.log(m, "ITERATION ENDS AND STARTS OVER WITH m = -1")
+        console.log(minFound.minValue, "minFound.minValue at else if")
+        console.log(minFound.minIndex, "minFound.minIndex at else if")
+        testarray.splice(minFound.minIndex, 1);
+        m = 0;
+        sortedArray.push(minFound.minValue);
+        console.log(sortedArray, "------sortedArray------")
+        minFound.minValue = testarray[m];
+        minFound.minIndex = m;
     }  
     
     whileCheck++
@@ -238,7 +281,6 @@ function loop() {
 
         //Draw collective center point for Traveling Salesman Points
         centerPoint.drawCenterPoint(); 
-        console.log(centerPoint, "CenterPoint")
 
     } else {
        //draw Traveling Salesman Points
