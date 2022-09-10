@@ -231,34 +231,34 @@ let whileCheck = 0
 // }
 
 let testarray = [0, 5, 2, 3, 4, 7, 5]
-minFound.minValue = testarray[m];
+minFound.minValue = travelingSalesmanOrdered[m];
 minFound.minIndex = m;
 
-while (testarray.length > 0) {
+while (travelingSalesmanOrdered.length > 0) {
     
-    console.log(testarray, "travelingSalesmanOrdered")
+    console.log(travelingSalesmanOrdered, "travelingSalesmanOrdered")
     console.log(m, "m before conditionals")
     
-    if (m < testarray.length) {
+    if (m < travelingSalesmanOrdered.length) {
 
-        console.log(testarray[m], "TESTARRAY[M] BEFORE CONDITIONALS")
+        console.log(travelingSalesmanOrdered[m], "travelingSalesmanOrdered[M] BEFORE CONDITIONALS")
         console.log(minFound, "MINFOUND BEFORE CONDITIONALS")
-       if (testarray[m] < minFound.minValue) {
+       if (travelingSalesmanOrdered[m] < minFound.minValue) {
             console.log(minFound, 'NEW MINFOUND FOUND')
-            minFound.minValue = testarray[m];   
+            minFound.minValue = travelingSalesmanOrdered[m];   
             minFound.minIndex = m;
             console.log(minFound, "new minFound");
        } 
        m++;
-    }  else if (m >= testarray.length || testarray.length === 1) {
+    }  else if (m >= travelingSalesmanOrdered.length || travelingSalesmanOrdered.length === 1) {
         console.log(m, "ITERATION ENDS AND STARTS OVER WITH m = -1")
         console.log(minFound.minValue, "minFound.minValue at else if")
         console.log(minFound.minIndex, "minFound.minIndex at else if")
-        testarray.splice(minFound.minIndex, 1);
+        travelingSalesmanOrdered.splice(minFound.minIndex, 1);
         m = 0;
         sortedArray.push(minFound.minValue);
         console.log(sortedArray, "------sortedArray------")
-        minFound.minValue = testarray[m];
+        minFound.minValue = travelingSalesmanOrdered[m];
         minFound.minIndex = m;
     }  
     
