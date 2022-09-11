@@ -56,34 +56,29 @@ class Circle {
             let x = this.x - this.centerPointX;
             let y = this.centerPointY - this.y;
             let tanAngle = y / x;
-            console.log(this.x, "X IN TOP RIGHT QUADRANT")
-            console.log(this.y, "Y IN TOP RIGHT QUADRANT")
-            console.log(tanAngle, "tanAngle in top right quadrant")
             this.orderAngle = 90 - ((Math.atan(tanAngle) * (180/Math.PI))); 
         } else if (this.x > this.centerPointX && this.y > this.centerPointY) {
             let x = this.x - this.centerPointX;
             let y = this.y - this.centerPointY;
             let tanAngle = y / x;
-            console.log(this.x, "X IN BOTTOM RIGHT QUADRANT")
-            console.log(this.y, "Y IN BOTTOM RIGHT QUADRANT")
             this.orderAngle = 90 + ((Math.atan(tanAngle) * (180/Math.PI))); 
         } else if (this.x < this.centerPointX && this.y > this.centerPointY) {
             let x = this.centerPointX - this.x;
             let y = this.y - this.centerPointY;
             let tanAngle = y / x;
-            console.log(this.x, "X IN BOTTOM LEFT QUADRANT")
-            console.log(this.y, "Y IN BOTTOM LEFT QUADRANT")
             this.orderAngle = 180 + ((Math.atan(tanAngle) * (180/Math.PI)));
         } else if (this.x < this.centerPointX && this.y < this.centerPointY) {
             let x = this.centerPointX - this.x;
             let y = this.centerPointY - this.y;
             let tanAngle = y / x;
-            console.log(this.x, "X IN TOP LEFT QUADRANT")
-            console.log(this.y, "Y IN TOP LEFT QUADRANT")
             this.orderAngle = 270 + ((Math.atan(tanAngle) * (180/Math.PI)));
         }
 
-        travelingSalesmanOrdered.push(this.orderAngle);
+        travelingSalesmanOrdered.push(this);
+    }
+
+    drawConnectSortedArray() {
+
     }
 }
 
@@ -231,37 +226,76 @@ console.log(travelingSalesmanOrdered, 'traveling salesman point ordered')
 
 
 //Sort travelingSalesmanOrdered array from lowest to highest
+// let minFound = {
+//     minValue: 0,
+//     minIndex: 0
+// };
+// let sortedArray = [];
+// let m = 0
+
+// minFound.minValue = travelingSalesmanOrdered[m];
+// minFound.minIndex = m;
+
+// while (travelingSalesmanOrdered.length > 0) {
+        
+//     if (m < travelingSalesmanOrdered.length) {
+
+//        if (travelingSalesmanOrdered[m] < minFound.minValue) {
+//             minFound.minValue = travelingSalesmanOrdered[m];   
+//             minFound.minIndex = m;
+//        } 
+//        m++;
+//     }  else if (m >= travelingSalesmanOrdered.length || travelingSalesmanOrdered.length === 1) {
+//         travelingSalesmanOrdered.splice(minFound.minIndex, 1);
+//         m = 0;
+//         sortedArray.push(minFound.minValue);
+//         minFound.minValue = travelingSalesmanOrdered[m];
+//         minFound.minIndex = m;
+//     }  
+// }
+
 let minFound = {
     minValue: 0,
     minIndex: 0
 };
 let sortedArray = [];
+let orderedObject;
 let m = 0
 
-minFound.minValue = travelingSalesmanOrdered[m];
+minFound.minValue = travelingSalesmanOrdered[m].orderAngle;
 minFound.minIndex = m;
 
 while (travelingSalesmanOrdered.length > 0) {
         
     if (m < travelingSalesmanOrdered.length) {
 
-       if (travelingSalesmanOrdered[m] < minFound.minValue) {
-            minFound.minValue = travelingSalesmanOrdered[m];   
+       if (travelingSalesmanOrdered[m].orderAngle < minFound.minValue) {
+            minFound.minValue = travelingSalesmanOrdered[m].orderAngle;   
             minFound.minIndex = m;
+            orderedObject = travelingSalesmanOrdered[m];
        } 
        m++;
-    }  else if (m >= travelingSalesmanOrdered.length || travelingSalesmanOrdered.length === 1) {
+    } else if (travelingSalesmanOrdered.length === 1) {
+        sortedArray.push(travelingSalesmanOrdered[0]);
+        travelingSalesmanOrdered.splice(0, 1);
+    } else if (m >= travelingSalesmanOrdered.length && travelingSalesmanOrdered.length > 1) {
+        console.log(travelingSalesmanOrdered, "travelingSalesmanOrdered next to last")
         travelingSalesmanOrdered.splice(minFound.minIndex, 1);
         m = 0;
-        sortedArray.push(minFound.minValue);
-        minFound.minValue = travelingSalesmanOrdered[m];
+        sortedArray.push(orderedObject);
+        minFound.minValue = travelingSalesmanOrdered[m].orderAngle;
         minFound.minIndex = m;
+        orderedObject = travelingSalesmanOrdered[m]
     }  
 }
 
 console.log(sortedArray, "sortedArray")
 console.log(points, "CHECKING POINTS")
 
+for(i = 0; i < sortedArray.length; i++) {
+    console.log(i, "sortedArray orderangle i")
+    console.log(sortedArray[i].orderAngle, "sortedArray orderangle")
+}
 //Loop the animation using requestAnimationFrame()
 function loop() {
     //redraw background to give animation effect
@@ -276,6 +310,18 @@ function loop() {
         // console.log("started")
         //Draw collective center point for Points
         centerPoint.drawCenterPoint(); 
+        
+        ctx.beginPath();
+        for (i = 0; i < sortedArray.length; i++) {
+            if (i === 0) {
+                ctx.moveTo(sortedArray[i].x, sortedArray[i].y);
+            } else if (i > 0 && i < sortedArray.length) {
+                ctx.lineTo(sortedArray[i].x, sortedArray[i].y);
+            } 
+        }
+        ctx.closePath()
+        ctx.lineWidth = 1;
+        ctx.stroke();
 
     } 
 
