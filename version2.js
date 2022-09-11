@@ -66,7 +66,7 @@ class Circle {
             let x = this.centerPointX - this.x;
             let y = this.y - this.centerPointY;
             let tanAngle = y / x;
-            this.orderAngle = 180 + ((Math.atan(tanAngle) * (180/Math.PI)));
+            this.orderAngle = 180 + (90 - (Math.atan(tanAngle) * (180/Math.PI)));
         } else if (this.x < this.centerPointX && this.y < this.centerPointY) {
             let x = this.centerPointX - this.x;
             let y = this.centerPointY - this.y;
@@ -110,7 +110,7 @@ class UserControls {
     
 
 //Globals
-const salesmanPoints = 5;
+const salesmanPoints = 50;
 const points = []; 
 const centerX = width/2;
 const centerY = height/2;
@@ -315,7 +315,7 @@ function loop() {
         for (i = 0; i < sortedArray.length; i++) {
             if (i === 0) {
                 ctx.moveTo(sortedArray[i].x, sortedArray[i].y);
-            } else if (i > 0 && i < sortedArray.length) {
+            } else {
                 ctx.lineTo(sortedArray[i].x, sortedArray[i].y);
             } 
         }
