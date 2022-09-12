@@ -73,25 +73,6 @@ the same principle as the shrink wrap portion, albeit with a less fluid or calcu
    with incrementally decreasing effect of the new found center point's gravity on them, until that effect reaches 0,
    at which point the message will not be thrown back anymore. 
 
-
-## Rotation method using getcontext.rotate()
-function loop() {
-   ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-   ctx.fillRect(0, 0,  width, height);
-   
-   centerBall.draw();
-   ctx.save();
-   ctx.translate(centerBall.x, centerBall.y);
-   ballRotate.rotateBall();
-   ballRotate.draw();
-   ctx.restore();
-
-   requestAnimationFrame(loop);
-}
-
-loop();
-
-
 # Version2: A More Mathematical Approach 
 1. The first steps I see are that the most outward points come first. 
 2. Then, priority seems to be given to shortest radius. 
