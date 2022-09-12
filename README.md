@@ -88,7 +88,7 @@ the same principle as the shrink wrap portion, albeit with a less fluid or calcu
 
 ## Current logic for Version 2
 1. Plot random points in a circle without overlapping angles. 
-2. Plot collective center for all the points. Note: Yes this point is obvious is that it was already used to generate the random points. However, I 
+2. Plot collective center for all the points. Note: Yes this point is obvious in that it was already used to generate the random points. However, I 
    am assuming that I am given points and will have to derive the collective center on my own. Therefore, proving out the logic is necessary for 
    future test problem sets I will have to use to prove my theory out. 
 3. Using the collective center point as a reference, find the angles of the Traveling Salesman points in reference to that center point
