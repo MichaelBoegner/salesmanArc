@@ -100,3 +100,4 @@ the same principle as the shrink wrap portion, albeit with a less fluid or calcu
 1. Determine what logic should be implemented if two Traveling Salesman points share the same angle.
 2. What happens if a pair of shared angles is followed by another pair or more of shared angles?
 3. What happens if more than two points are shared? etc . . . 
+4. Need to output total distance travelled to prove out for future input of external sample sets. 
