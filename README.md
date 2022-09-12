@@ -95,3 +95,18 @@ loop();
 3. So likely that some combination of those two values can be used to sort the points in order by size of value.
 4. Once sorted, then draw the lines for visual representation of the solution.
 5. I will look for sample coordinates online to run tests once this version is implemented.
+
+## Current logic for Version 2
+1. Plot random points in a circle without overlapping angles. 
+2. Plot collective center for all the points. Note: Yes this point is obvious is that it was already used to generate the random points. However, I 
+   am assuming that I am given points and will have to derive the collective center on my own. Therefore, proving out the logic is necessary for 
+   future test problem sets I will have to use to prove my theory out. 
+3. Using the collective center point as a reference, find the angles of the Traveling Salesman points in reference to that center point
+   and a radius drawn vertically from the center point upwards as the starting point for the degree of any given Traveling Salesman point's angle.
+4. Sort the Traveling Salesman points by angles, in degrees, from lowest to highest to mimic a circle "wrapping" them and return the shortest distance to traverse each point once.
+5. Draw the resulting path of lowest to highest sorted Travelnig Salesman points.
+
+## Next Steps 
+1. Determine what logic should be implemented if two Traveling Salesman points share the same angle.
+2. What happens if a pair of shared angles is followed by another pair or more of shared angles?
+3. What happens if more than two points are shared? etc . . . 

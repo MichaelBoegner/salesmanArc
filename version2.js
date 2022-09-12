@@ -110,7 +110,7 @@ class UserControls {
     
 
 //Globals
-const salesmanPoints = 50;
+const salesmanPoints = 1000;
 const points = []; 
 const centerX = width/2;
 const centerY = height/2;
@@ -226,34 +226,6 @@ console.log(travelingSalesmanOrdered, 'traveling salesman point ordered')
 
 
 //Sort travelingSalesmanOrdered array from lowest to highest
-// let minFound = {
-//     minValue: 0,
-//     minIndex: 0
-// };
-// let sortedArray = [];
-// let m = 0
-
-// minFound.minValue = travelingSalesmanOrdered[m];
-// minFound.minIndex = m;
-
-// while (travelingSalesmanOrdered.length > 0) {
-        
-//     if (m < travelingSalesmanOrdered.length) {
-
-//        if (travelingSalesmanOrdered[m] < minFound.minValue) {
-//             minFound.minValue = travelingSalesmanOrdered[m];   
-//             minFound.minIndex = m;
-//        } 
-//        m++;
-//     }  else if (m >= travelingSalesmanOrdered.length || travelingSalesmanOrdered.length === 1) {
-//         travelingSalesmanOrdered.splice(minFound.minIndex, 1);
-//         m = 0;
-//         sortedArray.push(minFound.minValue);
-//         minFound.minValue = travelingSalesmanOrdered[m];
-//         minFound.minIndex = m;
-//     }  
-// }
-
 let minFound = {
     minValue: 0,
     minIndex: 0
@@ -282,7 +254,9 @@ while (travelingSalesmanOrdered.length > 0) {
         console.log(travelingSalesmanOrdered, "travelingSalesmanOrdered next to last")
         travelingSalesmanOrdered.splice(minFound.minIndex, 1);
         m = 0;
-        sortedArray.push(orderedObject);
+        if(orderedObject === undefined) {
+            sortedArray.push(travelingSalesmanOrdered[0]);
+        } else {sortedArray.push(orderedObject);}
         minFound.minValue = travelingSalesmanOrdered[m].orderAngle;
         minFound.minIndex = m;
         orderedObject = travelingSalesmanOrdered[m]
