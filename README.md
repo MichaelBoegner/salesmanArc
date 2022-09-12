@@ -99,5 +99,9 @@ the same principle as the shrink wrap portion, albeit with a less fluid or calcu
 # Version 3: Next Steps of Logic Being Implemented in Version 3
 1. Determine what logic should be implemented if two Traveling Salesman points share the same angle.
 2. What happens if a pair of shared angles is followed by another pair or more of shared angles?
+   - As demonstrated in the attached images of calculations, it appears that the first occurance of a pair of shared angles is shorter by taking the point of the two
+   with the greatest radius. 
+   - The second occurance should then take the shorter radius of the two shared angle points. 
+   - If there is a third occurance in a row, then the pattern starts over, with the radius with the greater raidus of the two being taken first. 
 3. What happens if more than two points are shared? etc . . . 
 4. Need to output total distance travelled to prove out for future input of external sample sets. 

@@ -160,9 +160,7 @@ while (points.length < salesmanPoints) {
         pointY = Math.sqrt(centerPointRadiusSq) * Math.sin(pointAngle);
         locationX = pointX + centerX;
         locationY = pointY + centerY;
-    }
-
-    
+    }    
 
     const point = new Circle (
         locationX,
