@@ -141,21 +141,28 @@ let storedAngle = 0,
 while (points.length < salesmanPoints) {
     if(pointsCounter === 0) {
         pointAngle = Math.random() * 2 * Math.PI;    
+        centerPointRadiusSq = Math.random() * (circle.radius) * circle.radius;
+        pointX = Math.sqrt(centerPointRadiusSq) * Math.cos(pointAngle);
+        pointY = Math.sqrt(centerPointRadiusSq) * Math.sin(pointAngle);
+        locationX = pointX + centerX;
+        locationY = pointY + centerY;
     } else if (Math.random() > 0.5 && randomTracker < 1) {
         randomTracker++;
-        pointAngle = points[pointsCounter - 1].orderAngle
+        locationX = points[pointsCounter - 1].x
+        locationY = points[pointsCounter - 1].y
     } else {
         if (randomTracker === 1) {
             randomTracker = 0;
         }
         pointAngle = Math.random() * 2 * Math.PI;    
+        centerPointRadiusSq = Math.random() * (circle.radius) * circle.radius;
+        pointX = Math.sqrt(centerPointRadiusSq) * Math.cos(pointAngle);
+        pointY = Math.sqrt(centerPointRadiusSq) * Math.sin(pointAngle);
+        locationX = pointX + centerX;
+        locationY = pointY + centerY;
     }
 
-    centerPointRadiusSq = Math.random() * (circle.radius) * circle.radius;
-    pointX = Math.sqrt(centerPointRadiusSq) * Math.cos(pointAngle);
-    pointY = Math.sqrt(centerPointRadiusSq) * Math.sin(pointAngle);
-    locationX = pointX + centerX;
-    locationY = pointY + centerY;
+    
 
     const point = new Circle (
         locationX,
