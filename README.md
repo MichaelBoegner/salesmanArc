@@ -1,6 +1,6 @@
 ## User Controls
-**Key Down on Letter S** starts drawing the points and lines simulataneously
-**Key Down on Letter D** stops drawing loop
+1. **Key Down on Letter S** starts drawing the points and lines simulataneously
+2. **Key Down on Letter D** stops drawing loop
 # Principle Solution for the Traveling Salesman Problem
 
 It is my understanding of the traveling salesman problem that the goal is to take a 
