@@ -110,7 +110,7 @@ class UserControls {
     
 
 //Globals
-const salesmanPoints = 1000;
+const salesmanPoints = 100;
 const points = []; 
 const centerX = width/2;
 const centerY = height/2;
@@ -139,7 +139,7 @@ while (points.length < salesmanPoints) {
     const point = new Circle (
         locationX,
         locationY,
-        1,
+        3,
         orderAngle = 0
     )
 
