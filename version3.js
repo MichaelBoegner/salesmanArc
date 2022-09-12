@@ -263,13 +263,14 @@ while (travelingSalesmanOrdered.length > 0) {
     }  
 }
 
-console.log(sortedArray, "sortedArray")
-console.log(points, "CHECKING POINTS")
 
+
+//console.log points sorted with their index
 for(i = 0; i < sortedArray.length; i++) {
     console.log(i, "sortedArray orderangle i")
     console.log(sortedArray[i].orderAngle, "sortedArray orderangle")
 }
+
 //Loop the animation using requestAnimationFrame()
 function loop() {
     //redraw background to give animation effect
