@@ -96,7 +96,7 @@ the same principle as the shrink wrap portion, albeit with a less fluid or calcu
 4. Sort the Traveling Salesman points by angles, in degrees, from lowest to highest to mimic a circle "wrapping" them and return the shortest distance to traverse each point once.
 5. Draw the resulting path of lowest to highest sorted Travelnig Salesman points.
 
-## Next Steps 
+# Version 3: Next Steps of Logic Being Implemented in Version 3
 1. Determine what logic should be implemented if two Traveling Salesman points share the same angle.
 2. What happens if a pair of shared angles is followed by another pair or more of shared angles?
 3. What happens if more than two points are shared? etc . . . 
