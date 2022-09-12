@@ -15,7 +15,8 @@ class Circle {
         radius,
         orderAngle,
         centerPointX,
-        centerPointY
+        centerPointY,
+        radiusToCenterPoint
         ) {
         this.x = x;
         this.y = y;
@@ -23,6 +24,7 @@ class Circle {
         this.orderAngle = orderAngle;
         this.centerPointX = centerPointX;
         this.centerPointY = centerPointY;
+        this.radiusToCenterPoint = radiusToCenterPoint;
     }
 
     draw() {
@@ -223,8 +225,6 @@ while (q < points.length) {
        q++; 
 }
 
-console.log(maxMinFound.minValueY, "maxMinFound.minValueY")
-console.log(points, "points AFTER WHILE LOOP")
 
 let centerPointX = (maxMinFound.maxValueX - maxMinFound.minValueX)/2 + maxMinFound.minValueX;
 let centerPointY = (maxMinFound.maxValueY - maxMinFound.minValueY)/2 + maxMinFound.minValueY; 
@@ -235,10 +235,12 @@ let centerPoint = new Circle(
     3
 )
 
-//assign Centerpoint to each Traveling Salesman Point
+
+//assign Centerpoint to each Traveling Salesman Point and radius to Centerpoint from each Traveling Salesman Point
 for(i = 0; i < points.length; i++) {
     points[i].centerPointX = centerPointX;
     points[i].centerPointY = centerPointY;
+    points[i].radiusToCenterPoint = Math.sqrt((points[i].x - centerPointX) + (points[i].y - centerPointY));
 }
 
 //Loop to calculate Traveling Salesman Point Angles
@@ -290,7 +292,7 @@ while (travelingSalesmanOrdered.length > 0) {
     }  
 }
 
-
+console.log(points, "SORTED POINTS ========")
 
 //console.log points sorted with their index
 for(i = 0; i < sortedArray.length; i++) {
