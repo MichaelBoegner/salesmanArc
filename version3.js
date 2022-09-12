@@ -285,6 +285,7 @@ function loop() {
         //Draw collective center point for Points
         centerPoint.drawCenterPoint(); 
         
+        //draw lines connecting points and demonstrating final shape/path
         ctx.beginPath();
         for (i = 0; i < sortedArray.length; i++) {
             if (i === 0) {
