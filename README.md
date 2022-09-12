@@ -1,6 +1,12 @@
 ## User Controls
 1. **Key Down on Letter S** starts drawing the points and lines simulataneously
 2. **Key Down on Letter D** stops drawing loop
+
+## Notes for Running the Code
+1. Open the html file.
+2. Press "S" to start the drawing of the points and lines connecting them demonstrating the shortest route. 
+3. Change the variable, "const salesmanPoints = 1000" in version2.js to whatever number of points you want to run. 
+4. Run seems to be stable up to at least 10,000 points. Haven't pushed it beyond that yet since the problem still isn't fully solved.
 # Principle Solution for the Traveling Salesman Problem
 
 It is my understanding of the traveling salesman problem that the goal is to take a 
