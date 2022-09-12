@@ -110,7 +110,7 @@ class UserControls {
     
 
 //Globals
-const salesmanPoints = 1000;
+const salesmanPoints = 20;
 const points = []; 
 const centerX = width/2;
 const centerY = height/2;
@@ -127,23 +127,45 @@ const userControls = new UserControls(
 )
 
 
-//Generate Traveling Salesman Points randomly
+//Generate Traveling Salesman Points randomly with random number of them sharing an angle with another
+let storedAngle = 0, 
+    pointsCounter = 0, 
+    pointAngle, 
+    centerPointRadiusSq, 
+    pointX, 
+    pointY, 
+    locationX, 
+    locationY,
+    randomTracker = 0
+
 while (points.length < salesmanPoints) {
-    let pointAngle = Math.random() * 2 * Math.PI;
-    let centerPointRadiusSq = Math.random() * (circle.radius) * circle.radius;
-    let pointX = Math.sqrt(centerPointRadiusSq) * Math.cos(pointAngle);
-    let pointY = Math.sqrt(centerPointRadiusSq) * Math.sin(pointAngle);
-    let locationX = pointX + centerX;
-    let locationY = pointY + centerY;
+    if(pointsCounter === 0) {
+        pointAngle = Math.random() * 2 * Math.PI;    
+    } else if (Math.random() > 0.5 && randomTracker < 1) {
+        randomTracker++;
+        pointAngle = points[pointsCounter - 1].orderAngle
+    } else {
+        if (randomTracker === 1) {
+            randomTracker = 0;
+        }
+        pointAngle = Math.random() * 2 * Math.PI;    
+    }
+
+    centerPointRadiusSq = Math.random() * (circle.radius) * circle.radius;
+    pointX = Math.sqrt(centerPointRadiusSq) * Math.cos(pointAngle);
+    pointY = Math.sqrt(centerPointRadiusSq) * Math.sin(pointAngle);
+    locationX = pointX + centerX;
+    locationY = pointY + centerY;
 
     const point = new Circle (
         locationX,
         locationY,
-        1,
+        3,
         orderAngle = 0
     )
 
-    points.push(point);  
+    points.push(point); 
+    pointsCounter++; 
 }
 
 
